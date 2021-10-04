@@ -1,0 +1,69 @@
+POST log_consultas/_doc/
+{
+  "@timestamp": "2010-05-15T22:00:54",
+  "estado_consulta": "consumo",
+  "servicio": "consulta",
+  "administrador": "Juan Carlos",
+  "consultas_realizadas": 52
+}
+
+GET /log_consultas/_mapping   
+
+PUT _index_template/consultas_template
+{
+  "index_patterns": [
+    "log_consultas*"
+  ],
+  "template": {
+    "settings": {
+      "number_of_shards": 1
+    },
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "administrador": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "consultas_realizadas": {
+          "type": "long"
+        },
+        "estado_consulta": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "servicio": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+GET /log_consultas/_search?q=error
+
+GET /log_consultas/_search?q=consumo
+
+GET /log_consultas/_search?q=Juan Lara
+
+GET /log_consultas/_search?q=informativo
+
+GET /log_consultas/_search?q=borrado
